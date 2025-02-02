@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to Molly!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flipdown@0.3.2/dist/flipdown.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: 1s ease-out;
+            overflow: hidden;
+            background: #373B44;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #0f0f0f, #140031);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #0e0e0e, #140031); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            }
+
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: -1; /* Pushes it behind everything */
+            transition: background-image 1s ease-out;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 2;
+            
+            /* Gradient overlay fading from the center */
+            background: radial-gradient(circle, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.5) 80%);
+            pointer-events: none; /* ⛔ Prevents interference with clicks */
+        }
+
+
+        h1 {
+            font-size: 46px;
+            background: #373B44;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #eec084, #ff9a9a);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #eec084, #ff9a9a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 3.5s steps(20, end), blink-caret 0.75s step-end infinite;
+            position: absolute;
+            top: 20px;
+            text-align: center;
+        }
+
+        /* Typing animation */
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 20ch;
+            }
+        }
+
+        /* Typing animation */
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 40ch;
+            }
+        }
+
+        /* ARROW */
+
+        /* From Uiverse.io by Nawsome */ 
+        .arrow {
+        cursor: pointer;
+        height: 60px;
+        left: 75%;
+        position: absolute;
+        bottom: 10.8%;
+        transform: translateX(-50%) translateY(-50%);
+        transition: transform 0.2s;
+        width: 30px;
+        }
+
+        .arrow-top, .arrow-bottom {
+        background-color: #666;
+        height: 4px;
+        left: -5px;
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        }
+
+        .arrow-top:after, .arrow-bottom:after {
+        background-color: #fff;
+        content: "";
+        height: 100%;
+        position: absolute;
+        top: 0;
+        transition: all 0.15s;
+        }
+
+        .arrow-top {
+        transform: rotate(45deg);
+        transform-origin: bottom right;
+        }
+
+        .arrow-top:after {
+        left: 100%;
+        right: 0;
+        transition-delay: 0s;
+        }
+
+        .arrow-bottom {
+        transform: rotate(-45deg);
+        transform-origin: top right;
+        }
+
+        .arrow-bottom:after {
+        left: 0;
+        right: 100%;
+        transition-delay: 0.15s;
+        }
+
+        .arrow:hover .arrow-top:after {
+        left: 0;
+        transition-delay: 0.15s;
+        }
+
+        .arrow:hover .arrow-bottom:after {
+        right: 0;
+        transition-delay: 0s;
+        }
+
+        .arrow:active {
+        transform: translateX(-50%) translateY(-50%) scale(0.9);
+        }
+
+        .flipdown__theme-light {
+            color: black; /* Text color */
+        }
+
+        .flipdown__theme-dark {
+            /* background: black; Dark mode background */
+            color: white; /* Text color */
+        }
+
+
+        #flipdown {
+            position: fixed;
+            bottom: 100px; /* Distance from bottom */
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div id="background"></div>
+    <div id="overlay"></div>
+
+    <h1>Countdown To Molly Part 2!</h1>
+
+    <div id="flipdown" class="flipdown"></div>
+
+    <div class="arrow">
+        <div class="arrow-top"></div>
+        <div class="arrow-bottom"></div>
+      </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flipdown@0.3.2/dist/flipdown.min.js"></script>
+    <script src="images.js"></script>
+    <script>
+        const arrow = document.querySelector('.arrow');
+        let isLightTheme = true; // Track the current theme
+        let flipdownInstance;
+
+        const targetDateseconds = Math.floor(new Date('2025-03-08T00:00:00').getTime() / 1000);
+
+        // Function to initialize FlipDown with the selected theme
+        function initializeFlipDown(theme) {
+            // Remove previous FlipDown instance by clearing its container
+            document.getElementById("flipdown").innerHTML = "";
+
+            // Create a new FlipDown instance
+            flipdownInstance = new FlipDown(targetDateseconds, { theme: theme })
+                .start()
+                .ifEnded(() => {
+                    console.log('The countdown has ended!');
+                });
+
+            // Update the FlipDown theme class on the container
+            document.getElementById("flipdown").classList.toggle("flipdown__theme-dark", theme === "dark");
+            document.getElementById("flipdown").classList.toggle("flipdown__theme-light", theme === "light");
+        }
+
+        // Initialize FlipDown for the first time
+        initializeFlipDown("light");
+
+        // Add event listener to the arrow button
+        arrow.addEventListener('click', () => {
+            isLightTheme = !isLightTheme; // Toggle theme flag
+            initializeFlipDown(isLightTheme ? "light" : "dark"); // Reinitialize with new theme
+        });
+
+
+        </script>
+<!-- 
+    <footer>
+        Share this link with friends to keep track together!
+    </footer> -->
+
+    <script>
+        const targetDate = new Date('January 25, 2025 00:00:00').getTime();
+
+        // const images = [
+        //     'US.JPG',
+        //     'US6.JPG',
+        //     'US2.png',
+        //     'US4.png',
+        //     'US5.png',
+        //     'US3.png',
+        //     'US7.png',
+        //     'US8.png'
+        // ];
+
+        let currentIndex = 0;
+
+        const backgroundDiv = document.getElementById("background");
+
+        function changeBackground() {
+
+            if (images.length > 0) {
+                backgroundDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
+                currentIndex = (currentIndex + 1) % images.length;
+            }
+
+            // const transitionStyle = transitions[currentIndex];
+            // document.body.style.transition = transitionStyle;
+
+            // Log to ensure cycling through transitions
+            console.log(`Background updated to: ${images[currentIndex]}, with transition: ${transitionStyle}`);
+
+            // Update index for next change
+            currentIndex = (currentIndex + 1) % images.length;
+
+            console.log(transitions[currentIndex]);
+        }
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                // document.getElementById('countdown').innerHTML = "It's Golf Day! Enjoy!";
+                clearInterval(countdownInterval);
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown').innerHTML = 
+                `${days} Days, ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds`;
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        const backgroundInterval = setInterval(changeBackground, 15000);
+
+        // updateCountdown();
+        changeBackground();
+    </script>
+</body>
+</html>
